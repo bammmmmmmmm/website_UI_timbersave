@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="angular_scripts" ng-cloak>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Finder</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!--Awesome-something is source of the arrows used I think... I know the table doesn't function without lol-->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+    <!-- Custom CSS -->
+    <link href="css/2-col-portfolio.css" rel="stylesheet">
+
+    <!--The ng cloak below stops page from loading before all angular and css loaded properly-->
+    <style type="text/css">
+
+            [ng\:cloak], [ng-cloak], .ng-cloak {
+                display: none;
+            }
+        .navbar-brand,
+        .navbar-nav li a {
+            line-height: 80px;
+            height: 80px;
+            padding-top: 0;
+        }
+        .headRow {
+            background-color: #39D68D;
+            color: white;
+        }
+        .oddRow {
+            background-color: #C1FFC1;
+        }
+        .evenRow {
+            background-color: #32CD99;
+        }
+        img {
+            display: block;
+            margin:0 auto;
+        }
+        .matchnav {
+            background-color: #F5F5F5;
+        }
+        a { color: inherit; }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<!--ontroller called at body level due to use in various unrelated divs of searchbar and table of results-->
+<body ng-controller="mainCtrl">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!--Company logo to float right-->
+        <a class="navbar-brand navbar-right" href="#"><img src="resources/hpe_pri_grn_rev_rgb.png" height="70px"  /></a>
+
+        <!--Our Logo here-->
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"><img src="resources/magnifying-glass-2-512.png" height="70px"  /></a>
+        </div>
+
+        <!-- Our Serach to link to this... Shouldn't have the hardcoded padding though-->
+        <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3" style="padding-left: 100px">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Enter an Id, Soln Name or Region " ng-model="searchBox">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+</nav>
+
+
+
+
+    <!-- Page Content -->
+    <div class="container-fluid matchnav" >
+
+        <!-- Page Header -->
+        <!--Unnecessary atm-->
+        <div class="row">
+            <div class="col-lg-12"  style="float: none; margin: 0 auto;">
+                <h1 class="page-header">
+                </h1>
+            </div>
+        </div>
+        <!-- /.row -->
+
+
+
+
+        <!-- This hosts the map panel we need to link to the geo-filter panel and the org filter panel Row -->
+        <div class="row">
+            <div class="col-md-8 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" src="https://placeholdit.imgix.net/~text?txtsize=92&txt=1100%C3%97500&w=1100&h=500" alt=""  >
+                </a>
+            </div>
+
+            <!--Remove Placeholders below and replace with org filter window-->
+            <div class="col-md-4 portfolio-item">
+                <h3><a id="popoverData1" href="#" data-content="Use this section to filter employees by Country" rel="popover" data-placement="bottom" data-original-title="Information on Org Filter" data-trigger="hover">Org & Sub Org Filter</a></h3>
+                <a href="#">
+                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+                </a>
+            </div>
+        </div>
+        <!-- /.row -->
+
+
+
+
+
+        <!-- Projects Row -->
+        <div class="row" autoscroll="false">
+            <div class="col-md-8 portfolio-item"  >
+               <h2><a id="popoverData2" href="#" data-content="Click on any of the below results to learn more on this employee." rel="popover" data-placement="bottom" data-original-title="The Results Are In!" data-trigger="hover">Results</a></h2>
+                <!--Logic for selection/ filtering-->
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="headRow">
+                            <th>
+                                <a href="#" ng-click="sortType = 'id'; sortReverse =!sortReverse">
+                                     Case Id
+                                    <span ng-show="sortType == 'id' && !sortReverse" class="fa fa-caret-down"></span>
+                                    <span ng-show="sortType == 'id' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                    </th>
+                            <th>
+                                <a href="#" ng-click="sortType = 'solnName'; sortReverse = !sortReverse">
+                                     Soln Name
+                                    <span ng-show="sortType == 'solnName' && !sortReverse" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'solnName' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                    </th>
+                                    <th>
+                                <a href="#" ng-click="sortType = 'region'; sortReverse =!sortReverse">
+                                     Case Region
+                                    <span ng-show="sortType == 'region' && !sortReverse" class="fa fa-caret-down"></span>
+                                            <span ng-show="sortType == 'region' && sortReverse" class="fa fa-caret-up"></span>
+                                        </a>
+                                    </th>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="retrievedCase in retrievedCases | orderBy:sortType:sortReverse | filter:searchBox" ng-class="{oddRow: $odd}" ng-class="{evenRow: $even}">
+                        <td>{{retrievedCase.id}}</td>
+                        <td>{{retrievedCase.solnName}}</td>
+                        <td>{{retrievedCase.locn.region}}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-md-4 portfolio-item">
+               <h3><a id="popoverData3" href="#" data-content="Use this section to filter employees by Country" rel="popover" data-placement="bottom" data-original-title="Information on Geo Filter" data-trigger="hover">Region & Country Filter</a></h3>
+                <a href="#">
+                    <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+                </a>
+            </div>
+        </div>
+        <!-- /.row -->
+       <hr>
+
+
+        <!-- Footer -->
+        <footer >
+            <div class="row " >
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Hewlett Packard Enterprise 2016</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!--  Angular 1.5.8 JavaScript CDN and  My own app file-->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="js/angular_scripts.js"></script>
+
+    <!--Temporary  script for ajax call to bootstrap for onhover windows used. Replace with angular equivalent in angular_scripts file-->
+    <script type="text/javascript">
+        $('#popoverData1').popover();
+        $('#popoverData2').popover();
+        $('#popoverData3').popover();
+    </script>
+</body>
+
+</html>
